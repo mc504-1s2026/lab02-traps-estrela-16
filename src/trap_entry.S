@@ -5,10 +5,79 @@
 .align 4
 trap_entry:
 
-    # your code here; save registers to the stack
+    # Allocate stack space for 32 registers (8 bytes each = 256 bytes)
+    addi sp, sp, -256
+
+    # Save all general-purpose registers (x1-x31) to the stack
+    # x0 is always zero, no need to save
+    sd x1,   0*8(sp)
+    sd x2,   1*8(sp)   # sp (original sp = saved sp + 256)
+    sd x3,   2*8(sp)
+    sd x4,   3*8(sp)
+    sd x5,   4*8(sp)
+    sd x6,   5*8(sp)
+    sd x7,   6*8(sp)
+    sd x8,   7*8(sp)
+    sd x9,   8*8(sp)
+    sd x10,  9*8(sp)
+    sd x11,  10*8(sp)
+    sd x12,  11*8(sp)
+    sd x13,  12*8(sp)
+    sd x14,  13*8(sp)
+    sd x15,  14*8(sp)
+    sd x16,  15*8(sp)
+    sd x17,  16*8(sp)
+    sd x18,  17*8(sp)
+    sd x19,  18*8(sp)
+    sd x20,  19*8(sp)
+    sd x21,  20*8(sp)
+    sd x22,  21*8(sp)
+    sd x23,  22*8(sp)
+    sd x24,  23*8(sp)
+    sd x25,  24*8(sp)
+    sd x26,  25*8(sp)
+    sd x27,  26*8(sp)
+    sd x28,  27*8(sp)
+    sd x29,  28*8(sp)
+    sd x30,  29*8(sp)
+    sd x31,  30*8(sp)
 
     call handle_trap
 
-    # your code here; restore registers
+    # Restore all general-purpose registers
+    ld x1,   0*8(sp)
+    # x2 (sp) is restored last
+    ld x3,   2*8(sp)
+    ld x4,   3*8(sp)
+    ld x5,   4*8(sp)
+    ld x6,   5*8(sp)
+    ld x7,   6*8(sp)
+    ld x8,   7*8(sp)
+    ld x9,   8*8(sp)
+    ld x10,  9*8(sp)
+    ld x11,  10*8(sp)
+    ld x12,  11*8(sp)
+    ld x13,  12*8(sp)
+    ld x14,  13*8(sp)
+    ld x15,  14*8(sp)
+    ld x16,  15*8(sp)
+    ld x17,  16*8(sp)
+    ld x18,  17*8(sp)
+    ld x19,  18*8(sp)
+    ld x20,  19*8(sp)
+    ld x21,  20*8(sp)
+    ld x22,  21*8(sp)
+    ld x23,  22*8(sp)
+    ld x24,  23*8(sp)
+    ld x25,  24*8(sp)
+    ld x26,  25*8(sp)
+    ld x27,  26*8(sp)
+    ld x28,  27*8(sp)
+    ld x29,  28*8(sp)
+    ld x30,  29*8(sp)
+    ld x31,  30*8(sp)
+
+    # Deallocate stack space
+    addi sp, sp, 256
 
     sret

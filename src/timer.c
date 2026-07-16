@@ -1,32 +1,35 @@
 #include <arch/timer.h>
-#include <kernel/panic.h>
+#include <arch/csr.h>
+
+volatile int alarm_pending = 0;
 
 u64 timer_read()
 {
-	/* not implemented */
-	BUG();
+	return csr_read(CSR_TIME);
 }
 
 void timer_irq_enable()
 {
-	/* not implemented */
-	BUG();
+	/* Set stimecmp to max value to prevent immediate fire */
+	csr_write(CSR_STIMECMP, ~0UL);
+	/* Enable the timer interrupt source in sie */
+	csr_set(CSR_SIE, CSR_SIE_STIE);
 }
 
 void timer_irq_disable()
 {
-	/* not implemented */
-	BUG();
+	csr_clear(CSR_SIE, CSR_SIE_STIE);
 }
 
 void timer_set_alarm(u64 secs)
 {
-	/* not implemented */
-	BUG();
+	u64 target = timer_read() + secs * TIMER_FREQ;
+	csr_write(CSR_STIMECMP, target);
 }
 
 void timer_irq()
 {
-	/* not implemented */
-	BUG();
+	alarm_pending = 1;
+	/* Prevent repeated fires until the next alarm is set */
+	csr_write(CSR_STIMECMP, ~0UL);
 }
